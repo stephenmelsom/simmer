@@ -58,10 +58,49 @@ authRoutes.get("/logout", (c) => {
 });
 
 authRoutes.get("/logged-out", (c) =>
-  c.html(
-    `<!doctype html><meta charset="utf-8"><title>Simmer — signed out</title>
-     <body style="background:#0B0E11;color:#C9D3DA;font-family:system-ui;display:grid;place-items:center;height:100vh;margin:0">
-     <div style="text-align:center"><p style="letter-spacing:.2em;color:#E8B23A">SIMMER</p>
-     <p>Signed out.</p><p><a href="/auth/login" style="color:#E8B23A">Sign in again</a></p></div>`,
-  ),
+  c.html(`<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Simmer — signed out</title>
+  <style>
+    body {
+      margin: 0; min-height: 100vh; display: grid; place-items: center;
+      background: #0B0E11; color: #C9D3DA;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+    .panel {
+      background: #151A1F; box-shadow: 0 0 0 1px #242C33; border-radius: 6px;
+      padding: 34px 38px; margin: 16px; max-width: 340px; text-align: center;
+    }
+    .brand {
+      font-family: ui-monospace, monospace; font-weight: 600; font-size: 15px;
+      letter-spacing: .32em; color: #E8B23A; margin: 0 0 4px;
+      text-shadow: 0 0 8px rgba(232,178,58,.32);
+    }
+    .eyebrow {
+      font-size: 10px; letter-spacing: .24em; color: #7D8A94; margin: 0 0 18px;
+    }
+    p.msg { margin: 0 0 22px; font-size: 14px; }
+    a.button {
+      display: inline-block; padding: 11px 24px; border-radius: 4px;
+      box-shadow: 0 0 0 1px #E8B23A; color: #E8B23A; text-decoration: none;
+      font-family: ui-monospace, monospace; font-size: 12px; letter-spacing: .18em;
+    }
+    a.button:hover, a.button:focus-visible {
+      background: rgba(232,178,58,.1); text-shadow: 0 0 8px rgba(232,178,58,.32);
+    }
+  </style>
+</head>
+<body>
+  <div class="panel">
+    <p class="brand">SIMMER</p>
+    <p class="eyebrow">SESSION CLOSED</p>
+    <p class="msg">You're signed out.</p>
+    <a class="button" href="/auth/login">SIGN BACK IN</a>
+  </div>
+</body>
+</html>`),
 );

@@ -70,6 +70,7 @@
   <span class="spacer"></span>
   <span class="who">{session.name}</span>
   <a class="logout" href="/auth/logout">SIGN OUT</a>
+  <span class="break" aria-hidden="true"></span>
 </header>
 
 <style>
@@ -154,5 +155,54 @@
   .logout:hover {
     color: var(--phosphor);
     text-decoration: none;
+  }
+
+  .break {
+    display: none;
+  }
+
+  /* Phone: two data bands — times + sign-out on top, weather/HF below. */
+  @media (max-width: 640px) {
+    .strip {
+      flex-wrap: wrap;
+      row-gap: 7px;
+      padding: 8px 12px;
+      overflow-x: visible;
+    }
+    .sep,
+    .who {
+      display: none;
+    }
+    .brand {
+      order: 1;
+    }
+    .clock {
+      order: 2;
+      font-size: 14px;
+    }
+    .zulu {
+      order: 3;
+    }
+    .spacer {
+      order: 4;
+    }
+    .logout {
+      order: 5;
+    }
+    .break {
+      display: block;
+      order: 6;
+      width: 100%;
+      height: 0;
+    }
+    .chip {
+      order: 7;
+    }
+    .hf {
+      order: 8;
+      font-size: 12px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 </style>
