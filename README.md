@@ -69,8 +69,12 @@ change dashboards.
    - Enable the **groups** scope/claim for the client — group routing depends on it.
 2. **Configure**: `cp .env.example .env` and fill in the secrets
    (`openssl rand -base64 48` for `SESSION_SECRET`).
-3. **Run**: `docker compose up -d --build`. Config and sessions live in
-   `./data` and survive container recreation.
+3. **Run**: `mkdir -p data && docker compose up -d --build`. Config and
+   sessions live in `./data` and survive container recreation. Create the
+   directory yourself first — if Docker auto-creates the bind mount it's owned
+   by root, and the container (which runs as uid 1000) can't open its SQLite
+   database. If you hit `SQLITE_CANTOPEN`, fix with:
+   `docker run --rm --user root -v $PWD/data:/data simmer:latest chown node:node /data`
 4. **Caddy** (LAN/Tailscale only, wildcard cert as usual):
 
    ```caddyfile
