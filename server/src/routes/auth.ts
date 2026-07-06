@@ -11,7 +11,9 @@ export const authRoutes = new Hono();
 authRoutes.get("/login", async (c) => {
   if (env.authMode === "disabled") return c.redirect("/");
   const { url, codeVerifier, state } = await startLogin();
-  const txn = sign(JSON.stringify({ v: codeVerifier, s: state }));
+  // base64url the JSON: raw quotes/commas are illegal in cookie values and
+  // browsers silently drop the cookie, killing the flow at the callback.
+  const txn = sign(Buffer.from(JSON.stringify({ v: codeVerifier, s: state })).toString("base64url"));
   const secure = env.baseUrl.startsWith("https://") ? "; Secure" : "";
   c.header(
     "Set-Cookie",
@@ -26,7 +28,7 @@ authRoutes.get("/callback", async (c) => {
   if (!raw) return c.text("Login session expired — start again at /auth/login", 400);
   let txn: { v: string; s: string };
   try {
-    txn = JSON.parse(raw);
+    txn = JSON.parse(Buffer.from(raw, "base64url").toString("utf8"));
   } catch {
     return c.text("Malformed login transaction — start again at /auth/login", 400);
   }
