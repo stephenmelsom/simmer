@@ -1,0 +1,17 @@
+services:
+  simmer:
+    build: .
+    image: simmer:latest
+    container_name: simmer
+    restart: unless-stopped
+    ports:
+      - "8686:8686"
+    environment:
+      BASE_URL: ${BASE_URL:-https://simmer.themelsoms.com}
+      OIDC_ISSUER: ${OIDC_ISSUER}
+      OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
+      OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET}
+      SESSION_SECRET: ${SESSION_SECRET}
+    volumes:
+      # Holds simmer.db (sessions + dashboards) and simmer.yaml (editable config).
+      - ./data:/data

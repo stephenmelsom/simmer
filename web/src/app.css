@@ -1,0 +1,225 @@
+/* ————————————————————————————————————————————————————————————————
+   Simmer — "Night Cockpit" theme
+   Tokens per PRD; skins remap only --phosphor + background texture.
+   ———————————————————————————————————————————————————————————————— */
+
+:root {
+  --panel-black: #0b0e11;
+  --panel-raised: #151a1f;
+  --bezel-line: #242c33;
+  --chart-ink: #c9d3da;
+  --chart-ink-dim: #7d8a94;
+  --phosphor: #e8b23a;
+  --phosphor-glow: rgba(232, 178, 58, 0.32);
+
+  /* Flight-category set — functional, FAA-standard. Never remapped by skins. */
+  --vfr: #17b978;
+  --mvfr: #2e7dd1;
+  --ifr: #e23d4b;
+  --lifr: #c043c1;
+  --unkn: #5a6771;
+
+  --font-display: "Chakra Petch", "IBM Plex Sans", sans-serif;
+  --font-body: "IBM Plex Sans", system-ui, sans-serif;
+  --font-data: "IBM Plex Mono", ui-monospace, monospace;
+
+  /* Faint sectional-chart contour lines, drawn in bezel color. */
+  --bg-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420' viewBox='0 0 420 420'%3E%3Cg fill='none' stroke='%23242c33' stroke-width='1' opacity='0.35'%3E%3Cpath d='M-20 80 Q 90 20 180 90 T 440 70'/%3E%3Cpath d='M-20 140 Q 100 80 200 150 T 440 130'/%3E%3Cpath d='M-20 210 Q 110 150 210 220 T 440 200'/%3E%3Cpath d='M-20 290 Q 90 230 190 300 T 440 280'/%3E%3Cpath d='M-20 360 Q 120 300 220 370 T 440 350'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+/* Skins: accent + texture only — layout and flight-category colors are fixed. */
+:root[data-skin="workshop"] {
+  --phosphor: #d99a4e;
+  --phosphor-glow: rgba(217, 154, 78, 0.32);
+  --bg-texture: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='420' height='420' viewBox='0 0 420 420'%3E%3Cg fill='none' stroke='%23242c33' stroke-width='1' opacity='0.4'%3E%3Cpath d='M0 60 H420 M0 130 H420 M0 200 H420 M0 270 H420 M0 340 H420'/%3E%3Cpath d='M60 0 V420 M200 0 V420 M340 0 V420'/%3E%3C/g%3E%3C/svg%3E");
+}
+:root[data-skin="field"] {
+  --phosphor: #9aa85c;
+  --phosphor-glow: rgba(154, 168, 92, 0.32);
+}
+:root[data-skin="crt"] {
+  --phosphor: #4ade80;
+  --phosphor-glow: rgba(74, 222, 128, 0.32);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+body {
+  background-color: var(--panel-black);
+  background-image: var(--bg-texture);
+  color: var(--chart-ink);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.45;
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: var(--phosphor);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+
+/* ——— Shared panel chrome (the instrument tile) ——— */
+
+.panel {
+  background: var(--panel-raised);
+  box-shadow: 0 0 0 1px var(--bezel-line); /* hairline seam, no heavy border */
+  border-radius: 6px;
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  overflow: hidden;
+  transition: box-shadow 120ms ease, transform 120ms ease;
+}
+
+/* Backlit-button lift on hover — the only ambient motion allowed. */
+.panel:hover {
+  box-shadow:
+    0 0 0 1px var(--bezel-line),
+    0 4px 18px rgba(0, 0, 0, 0.45);
+  transform: translateY(-1px);
+}
+
+/* Widget eyebrow: small technical label in the display face. */
+.eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--chart-ink-dim);
+  margin: 0 0 10px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.eyebrow .age {
+  letter-spacing: 0.08em;
+  font-weight: 400;
+  color: var(--chart-ink-dim);
+}
+
+/* ——— Data readouts ——— */
+
+.data {
+  font-family: var(--font-data);
+  font-feature-settings: "zero" 1; /* slashed zero — 0 vs O in station IDs */
+  font-variant-numeric: tabular-nums;
+}
+
+.phosphor {
+  color: var(--phosphor);
+  text-shadow: 0 0 8px var(--phosphor-glow);
+}
+
+/* Subtle phosphor scanline — live data readouts ONLY. */
+.readout {
+  position: relative;
+}
+.readout::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 2px,
+    rgba(0, 0, 0, 0.14) 2px,
+    rgba(0, 0, 0, 0.14) 3px
+  );
+  border-radius: inherit;
+}
+
+/* ——— Widget state messaging (UX writing lives in components) ——— */
+
+.state-msg {
+  color: var(--chart-ink-dim);
+  font-size: 13px;
+  margin: auto 0;
+  padding: 12px 0;
+}
+.state-msg.error {
+  color: var(--ifr);
+}
+.stale-flag {
+  color: var(--phosphor);
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+/* ——— Flight-category helpers ——— */
+
+.cat-VFR {
+  --cat: var(--vfr);
+}
+.cat-MVFR {
+  --cat: var(--mvfr);
+}
+.cat-IFR {
+  --cat: var(--ifr);
+}
+.cat-LIFR {
+  --cat: var(--lifr);
+}
+.cat-UNKN {
+  --cat: var(--unkn);
+}
+
+/* ——— Power-on sweep (avionics boot) — once, then still ——— */
+
+.power-sweep {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 0%,
+    rgba(232, 178, 58, 0.06) 45%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(232, 178, 58, 0.06) 55%,
+    transparent 100%
+  );
+  background-size: 220% 100%;
+  background-position: 130% 0;
+  animation: power-sweep 900ms ease-out forwards;
+}
+@keyframes power-sweep {
+  from {
+    background-position: 130% 0;
+    opacity: 1;
+  }
+  to {
+    background-position: -130% 0;
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .power-sweep {
+    display: none;
+  }
+  .panel,
+  .panel:hover {
+    transition: none;
+    transform: none;
+  }
+}
