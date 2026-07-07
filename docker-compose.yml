@@ -7,7 +7,7 @@ services:
     ports:
       - "8686:8686"
     environment:
-      BASE_URL: ${BASE_URL:-https://simmer.themelsoms.com}
+      BASE_URL: ${BASE_URL:-https://themelsoms.com}
       OIDC_ISSUER: ${OIDC_ISSUER}
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
       OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET}

@@ -64,7 +64,7 @@ change dashboards.
 ## Deployment
 
 1. **Register the OIDC client** in Pocket ID (Admin → OIDC Clients):
-   - Callback URL: `https://simmer.themelsoms.com/auth/callback`
+   - Callback URL: `https://themelsoms.com/auth/callback`
    - PKCE: enabled
    - Enable the **groups** scope/claim for the client — group routing depends on it.
 2. **Configure**: `cp .env.example .env` and fill in the secrets
@@ -78,7 +78,7 @@ change dashboards.
 4. **Caddy** (LAN/Tailscale only, wildcard cert as usual):
 
    ```caddyfile
-   simmer.themelsoms.com {
+   themelsoms.com {
      reverse_proxy simmer-host:8686
    }
    ```
@@ -128,8 +128,8 @@ inHg), and the raw METAR string is always the unmodified °C teletype.
 **Export / import** (requires membership in the first-listed group, i.e. admins):
 
 ```sh
-curl -H "Cookie: $SESSION" https://simmer.../api/config/export > simmer.yaml
-curl -X POST --data-binary @simmer.yaml -H "Cookie: $SESSION" https://simmer.../api/config/import
+curl -H "Cookie: $SESSION" https://themelsoms.com/api/config/export > simmer.yaml
+curl -X POST --data-binary @simmer.yaml -H "Cookie: $SESSION" https://themelsoms.com/api/config/import
 ```
 
 ## API
