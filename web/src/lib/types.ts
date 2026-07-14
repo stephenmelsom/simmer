@@ -7,7 +7,7 @@ export interface SessionInfo {
 
 export interface Placement {
   id: number;
-  widget: "metar" | "solar" | "links" | "clock";
+  widget: "metar" | "solar" | "links" | "clock" | "hunting";
   settings: Record<string, any>;
   grid_x: number;
   grid_y: number;

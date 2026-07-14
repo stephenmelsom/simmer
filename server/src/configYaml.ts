@@ -35,7 +35,7 @@ interface YamlShape extends Partial<AppConfig> {
   dashboards?: Record<string, { widgets?: YamlWidget[] }>;
 }
 
-const WIDGET_TYPES: WidgetType[] = ["metar", "solar", "links", "clock"];
+const WIDGET_TYPES: WidgetType[] = ["metar", "solar", "links", "clock", "hunting"];
 
 let appConfig: AppConfig = {
   skin: "aviation",
@@ -179,7 +179,7 @@ dashboards:
       - widget: links
         x: 0
         y: 5
-        w: 12
+        w: 8
         h: 3
         settings:
           groups:
@@ -215,6 +215,80 @@ dashboards:
                 - name: POTA
                   url: https://pota.app
                   icon: "🏞️"
+      # NC 2026-2027 game seasons — dates from the NCWRC "season dates at a glance"
+      # sheet. Deer/bear vary by zone (windows below are representative) and some
+      # migratory-bird splits firm up when the digest publishes Aug 1, 2026. The
+      # widget derives Open/Upcoming/Closed from today's date; update yearly.
+      - widget: hunting
+        x: 8
+        y: 5
+        w: 4
+        h: 3
+        settings:
+          title: HUNTING · NC
+          source: https://www.ncwildlife.gov/regulations/2026-2027-season-dates-glance
+          seasons:
+            # Big game
+            - name: Deer (Archery)
+              icon: "🏹"
+              start: "2026-09-12"
+              end: "2026-10-02"
+              note: varies by zone
+            - name: Deer (Gun)
+              icon: "🦌"
+              start: "2026-10-17"
+              end: "2027-01-01"
+              note: varies by zone
+            - name: Black Bear
+              icon: "🐻"
+              start: "2026-10-03"
+              end: "2027-01-01"
+              note: varies by zone
+            - name: Wild Turkey (Spring)
+              icon: "🦃"
+              start: "2027-04-17"
+              end: "2027-05-15"
+            # Small game
+            - name: Squirrel
+              icon: "🐿️"
+              start: "2026-10-12"
+              end: "2027-02-28"
+            - name: Rabbit
+              icon: "🐇"
+              start: "2026-10-12"
+              end: "2027-02-28"
+            - name: Bobwhite Quail
+              icon: "🐦"
+              start: "2026-11-21"
+              end: "2027-02-28"
+            - name: Ruffed Grouse
+              icon: "🪶"
+              start: "2026-10-12"
+              end: "2027-02-28"
+            - name: Raccoon / Opossum
+              icon: "🦝"
+              start: "2026-10-12"
+              end: "2027-02-28"
+            # Waterfowl / migratory (split seasons — span shown)
+            - name: Mourning Dove
+              icon: "🕊️"
+              start: "2026-09-05"
+              end: "2027-01-30"
+              note: splits
+            - name: Ducks
+              icon: "🦆"
+              start: "2026-10-15"
+              end: "2027-01-30"
+              note: splits
+            - name: Canada Goose
+              icon: "🪿"
+              start: "2026-10-15"
+              end: "2027-02-06"
+              note: splits
+            - name: Woodcock
+              icon: "🌰"
+              start: "2026-12-10"
+              end: "2027-01-30"
   home:
     widgets:
       - widget: clock

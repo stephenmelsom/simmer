@@ -3,7 +3,7 @@ import fs from "node:fs";
 import path from "node:path";
 import { env } from "./env.js";
 
-export type WidgetType = "metar" | "solar" | "links" | "clock";
+export type WidgetType = "metar" | "solar" | "links" | "clock" | "hunting";
 
 export interface Placement {
   id: number;

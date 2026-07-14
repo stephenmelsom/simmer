@@ -6,6 +6,7 @@
   import HamConditions from "./widgets/HamConditions.svelte";
   import ServiceLinks from "./widgets/ServiceLinks.svelte";
   import ClockWeather from "./widgets/ClockWeather.svelte";
+  import Hunting from "./widgets/Hunting.svelte";
 
   let session = $state<SessionInfo | null>(null);
   let dashboard = $state<ResolvedDashboard | null>(null);
@@ -62,6 +63,8 @@
           <ServiceLinks settings={placement.settings} placementId={placement.id} />
         {:else if placement.widget === "clock"}
           <ClockWeather settings={placement.settings} homeAirport={dashboard.homeAirport} />
+        {:else if placement.widget === "hunting"}
+          <Hunting settings={placement.settings} />
         {/if}
       </div>
     {/each}
